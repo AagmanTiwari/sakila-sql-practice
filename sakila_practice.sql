@@ -326,3 +326,133 @@ FROM payment
 WHERE staff_id = 1
    OR amount > 9
 ORDER BY payment_date DESC;
+
+
+
+-- 52. List films NOT rated 'G' or 'PG' AND with rental_duration > 5 days.
+SELECT *
+FROM film
+WHERE rating NOT IN ('g', 'pg')
+  AND rental_duration > 5;
+
+-- 53. Find rentals with return_date IS NOT NULL
+-- AND rental_date between '2005-05-25' and '2005-06-05'.
+SELECT *
+FROM rental
+WHERE return_date IS NOT NULL
+  AND rental_date BETWEEN '2005-05-25' AND '2005-06-05';
+
+-- 54. Display the top 6 most expensive films (replacement_cost)
+-- that have length greater than 100 minutes.
+SELECT *
+FROM film
+WHERE length > 100
+ORDER BY replacement_cost DESC
+LIMIT 6;
+
+-- 55. List first 8 customers whose first_name starts with 'J'
+-- OR last_name ends with 'EZ', ordered by first_name.
+SELECT *
+FROM customer
+WHERE first_name LIKE 'j%'
+   OR last_name LIKE '%ez'
+ORDER BY first_name ASC
+LIMIT 8;
+
+-- 56. List customers whose email is NULL.
+SELECT *
+FROM customer
+WHERE email IS NULL;
+
+-- 57. List rentals that have not yet been returned.
+SELECT *
+FROM rental
+WHERE return_date IS NULL;
+
+-- 58. List addresses where address2 is NULL.
+SELECT *
+FROM address
+WHERE address2 IS NULL;
+
+-- 59. List films whose title starts with 'T' AND length > 90
+-- OR rental_rate < 1.99, ordered by rental_rate ascending.
+-- Show the first 7 records.
+SELECT *
+FROM film
+WHERE title LIKE 't%'
+  AND length > 90
+   OR rental_rate < 1.99
+ORDER BY rental_rate ASC
+LIMIT 7;
+
+-- 60. List customers whose email contains '.net'
+-- AND active = 1 AND store_id is NOT 2.
+-- Order by customer_id descending.
+SELECT *
+FROM customer
+WHERE email LIKE '%.net%'
+  AND active = 1
+  AND store_id != 2
+ORDER BY customer_id DESC;
+
+-- 61 (Set A). List actors whose first_name starts with 'A'.
+SELECT *
+FROM actor
+WHERE first_name LIKE 'a%';
+
+-- 62 (Set A). List actors whose last_name ends with 'SON'.
+SELECT *
+FROM actor
+WHERE last_name LIKE '%son';
+
+-- 63 (Set A). List films containing 'LOVE' in the title.
+SELECT *
+FROM film
+WHERE title LIKE '%love%';
+
+-- 64 (Set A). List customers whose first_name has exactly 4 letters.
+SELECT *
+FROM customer
+WHERE first_name LIKE '____';
+
+-- 61 (Set B). Find actors whose first_name starts with 'A'
+-- and has exactly 5 letters.
+SELECT *
+FROM actor
+WHERE first_name LIKE 'a____';
+
+-- 62 (Set B). List actors whose last_name ends with 'N'
+-- and has exactly 4 letters.
+SELECT *
+FROM actor
+WHERE last_name LIKE '___n';
+
+-- 63 (Set B). Find customers whose first_name contains 'ER'.
+SELECT *
+FROM customer
+WHERE first_name LIKE '%er%';
+
+-- 64 (Set B). Find films whose title starts with 'S'
+-- and ends with 'E'.
+SELECT *
+FROM film
+WHERE title LIKE 's%'
+  AND title LIKE '%e';
+
+-- 65. Find actors whose first_name has 'A'
+-- as the second character.
+SELECT *
+FROM actor
+WHERE first_name LIKE '_a%';
+
+-- 66. List customers whose last_name starts with 'B'
+-- and has exactly 6 characters.
+SELECT *
+FROM customer
+WHERE last_name LIKE 'b_____';
+
+-- 67. Find films whose title contains exactly 3 characters
+-- immediately before 'ING'.
+SELECT *
+FROM film
+WHERE title LIKE '%___ing%';
