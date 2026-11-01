@@ -2,39 +2,89 @@
 
 A personal SQL practice project using the MySQL Sakila sample database. This repository contains question-wise queries that explore a film rental business, including its actors, films, customers, payments, and rentals.
 
-The goal is to build confidence in writing SQL, translating requirements into filtering conditions, and understanding query results.
+The goal is to build confidence in writing SQL, translating requirements into filtering conditions, understanding query results, and gradually progressing toward advanced SQL concepts.
 
 ## Technologies
 
 - MySQL 8.4
 - MySQL command-line client
 - Visual Studio Code
+- Git and GitHub
 
 ## Repository Structure
 
-| File                  | Description                                  |
-| --------------------- | -------------------------------------------- |
-| `sakila_practice.sql` | Practice questions and their SQL solutions   |
-| `README.md`           | Project overview, setup, usage, and progress |
+| File                  | Description                                                   |
+| --------------------- | ------------------------------------------------------------- |
+| `sakila_practice.sql` | Practice questions and their SQL solutions                    |
+| `README.md`           | Project overview, setup, usage, learning topics, and progress |
 
-All solutions are maintained in one SQL file. Each query is preceded by a comment describing the question.
+All completed practice solutions are maintained in one SQL file. Each query is preceded by a comment describing the question.
 
 ## Practice Topics
 
+### SQL Fundamentals
+
 The exercise collection covers:
 
-- Selecting all or specific columns
-- Filtering with `WHERE`
-- Comparison operators
+- Selecting all or specific columns using `SELECT`
+- Filtering records with `WHERE`
+- Comparison operators (`=`, `>`, `<`, `>=`, `<=`, `!=`)
 - Logical conditions using `AND`, `OR`, and `NOT`
 - Operator precedence and parentheses
 - Range filtering with `BETWEEN`
-- Matching multiple values with `IN`
+- Matching multiple values with `IN` and `NOT IN`
 - Pattern matching with `LIKE`
+- Using `%` and `_` wildcards
 - Handling missing values with `IS NULL` and `IS NOT NULL`
-- Sorting by one or multiple columns
+- Sorting by one or multiple columns using `ORDER BY`
+- Sorting in ascending and descending order
 - Limiting results with `LIMIT`
-- Combining conditions to answer specific questions
+- Combining multiple conditions to solve SQL problems
+
+### SQL Window Functions — In Progress
+
+Currently learning SQL window functions to perform calculations across related rows while retaining individual rows in the output.
+
+Topics being explored:
+
+- Introduction to window functions
+- Understanding the `OVER()` clause
+- Grouping rows with `PARTITION BY`
+- Sorting within windows using `ORDER BY`
+- Row numbering using `ROW_NUMBER()`
+- Ranking using `RANK()` and `DENSE_RANK()`
+- Understanding differences between ranking functions
+- Aggregate window functions such as `SUM()`, `AVG()`, and `COUNT()`
+- Running totals and cumulative calculations
+- Accessing previous and next rows using `LAG()` and `LEAD()`
+- Difference between `GROUP BY` and window functions
+
+#### Window Function Example
+
+An illustrative Sakila query that assigns a row number to each customer's payments, ordered by payment amount:
+
+```sql
+SELECT
+    payment_id,
+    customer_id,
+    amount,
+    ROW_NUMBER() OVER (
+        PARTITION BY customer_id
+        ORDER BY amount DESC, payment_id ASC
+    ) AS payment_position
+FROM payment;
+```
+
+In this example:
+
+- `PARTITION BY customer_id` divides payments into customer-wise groups.
+- `ORDER BY amount DESC` arranges payments from highest to lowest within each customer.
+- `payment_id ASC` provides consistent ordering when amounts are equal.
+- `ROW_NUMBER()` assigns a sequential number within each customer's partition.
+
+Unlike `GROUP BY`, a window function can calculate across related rows without collapsing them into a single row per group.
+
+_This is a learning example, not a claim that the window-function exercises have been completed. They will be added to the practice file as they are completed._
 
 ## Tables Used
 
@@ -108,14 +158,28 @@ ORDER BY length ASC;
 
 This combines equality filtering, an inclusive range, and ascending sorting.
 
-## Progress
+## Practice Progress
+
+### Sakila SQL Exercises
 
 - [x] Questions 1–23
-- [ ] Questions 24–60
-- [ ] Pattern-matching exercises, including both sets numbered 61–64
-- [ ] Questions 65–100
+- [x] Questions 24–60
+- [x] Pattern-matching exercises, including both sets numbered 61–64
+- [x] Questions 65–67
+- [ ] Questions 68–100
 
-The source worksheet contains 104 question entries because numbers 61–64 appear twice. Both sets will be retained using A/B suffixes.
+The source worksheet contains 104 question entries because numbers 61–64 appear twice. Both sets are retained using A/B suffixes.
+
+### Advanced SQL Learning
+
+- [x] SQL filtering and logical conditions
+- [x] Pattern matching using `LIKE`
+- [x] Sorting and limiting results
+- [x] Combining multiple filtering conditions
+- [ ] Window functions — learning in progress
+- [ ] Window-function practice exercises
+
+The progress checklist will be updated as additional queries and concepts are practiced.
 
 ## Query Notes
 
@@ -124,8 +188,18 @@ The source worksheet contains 104 question entries because numbers 61–64 appea
 - Use `IS NULL` to test for missing values.
 - Parentheses make combined `AND` and `OR` conditions explicit.
 - Use `ORDER BY` when the order of returned records matters.
-- For reproducible “first N” results, use `ORDER BY` with `LIMIT` and a unique tie-breaker where needed.
+- For reproducible "first N" results, use `ORDER BY` with `LIMIT` and a unique tie-breaker where needed.
 - Date-time filters require care when a question intends to include an entire final day.
+- `LIKE` supports `%` for zero or more characters and `_` for exactly one character.
+- Window functions perform calculations over related rows while preserving individual result rows.
+- `PARTITION BY` divides rows into partitions for window calculations.
+- `ORDER BY` inside `OVER()` determines the order used by applicable window functions.
+
+## Learning Objective
+
+The purpose of this repository is not just to complete SQL questions but to understand how queries work and build the ability to solve database problems independently.
+
+The practice progresses from basic SQL filtering and pattern matching toward analytical queries and advanced SQL concepts.
 
 ## Dataset Credit
 
