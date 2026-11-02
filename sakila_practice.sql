@@ -456,3 +456,131 @@ WHERE last_name LIKE 'b_____';
 SELECT *
 FROM film
 WHERE title LIKE '%___ing%';
+
+
+
+-- Q68. Display actors whose last_name contains 'SON'
+-- but does not start with 'J'.
+SELECT *
+FROM actor
+WHERE last_name LIKE '%SON%'
+  AND last_name NOT LIKE 'J%';
+
+
+-- Q69. Find customers whose email starts with 'a'
+-- and ends with '.org'.
+SELECT *
+FROM customer
+WHERE email LIKE 'a%'
+  AND email LIKE '%.org';
+
+
+-- Q70. List films whose title has 'O' as the third character.
+SELECT *
+FROM film
+WHERE title LIKE '__O%';
+
+
+-- Q71. Find actors whose first_name ends with 'A'
+-- and has exactly 4 characters.
+SELECT *
+FROM actor
+WHERE first_name LIKE '___A';
+
+
+-- Q72. Show customers whose last_name contains 'LL'
+-- and has at least 6 characters.
+SELECT *
+FROM customer
+WHERE last_name LIKE '%LL%'
+  AND CHAR_LENGTH(last_name) >= 6;
+
+
+-- Q73. Find films whose title starts with any two characters
+-- followed immediately by 'AR'.
+SELECT *
+FROM film
+WHERE title LIKE '__AR%';
+
+
+-- Q74. Display the first 5 actors whose first_name
+-- has 'E' as the fourth character.
+SELECT *
+FROM actor
+WHERE first_name LIKE '___E%'
+LIMIT 5;
+
+
+-- Q75. List films whose title starts with 'C',
+-- has exactly 5 characters before a space,
+-- followed by any characters.
+SELECT *
+FROM film
+WHERE title LIKE 'C____ %';
+
+
+-- Q76. Display payments whose amount is between 2 and 4.
+SELECT *
+FROM payment
+WHERE amount BETWEEN 2 AND 4;
+
+
+-- Q77. List films rated 'PG' or 'PG-13'.
+SELECT *
+FROM film
+WHERE rating IN ('PG', 'PG-13');
+
+
+-- Q78. List films whose length is between 90 and 120 minutes.
+SELECT *
+FROM film
+WHERE length BETWEEN 90 AND 120;
+
+
+-- Q79. List films rated 'PG-13' or 'R'
+-- with length between 95 and 130 minutes,
+-- ordered by length descending.
+SELECT *
+FROM film
+WHERE rating IN ('PG-13', 'R')
+  AND length BETWEEN 95 AND 130
+ORDER BY length DESC;
+
+
+-- Q80. Find customers whose first_name starts with 'K'
+-- and last_name contains 'AR',
+-- ordered by customer_id.
+SELECT *
+FROM customer
+WHERE first_name LIKE 'K%'
+  AND last_name LIKE '%AR%'
+ORDER BY customer_id ASC;
+
+
+-- Q81. Show payments where amount > 6
+-- OR between 1 and 2,
+-- excluding payments made by staff_id = 2.
+SELECT *
+FROM payment
+WHERE (amount > 6 OR amount BETWEEN 1 AND 2)
+  AND staff_id != 2;
+
+
+-- Q82. Display rentals where return_date IS NULL
+-- OR rental_date is between '2005-06-01' and '2005-06-10',
+-- ordered by rental_date descending, limit 10.
+SELECT *
+FROM rental
+WHERE return_date IS NULL
+   OR rental_date BETWEEN '2005-06-01' AND '2005-06-10'
+ORDER BY rental_date DESC
+LIMIT 10;
+
+
+-- Q83. List films whose title starts with 'B'
+-- and has 'E' as the third character,
+-- ordered alphabetically.
+SELECT *
+FROM film
+WHERE title LIKE 'B_E%'
+ORDER BY title ASC;
