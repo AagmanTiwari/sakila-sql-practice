@@ -1,8 +1,8 @@
 # Sakila SQL Practice
 
-A personal SQL practice project using the MySQL Sakila sample database. This repository contains question-wise queries that explore a film rental business, including its actors, films, customers, payments, and rentals.
+A personal SQL practice repository built around the **MySQL Sakila sample database**, with additional exercises for SQL aggregation and window functions.
 
-The goal is to build confidence in writing SQL, translating requirements into filtering conditions, understanding query results, and gradually progressing toward advanced SQL concepts.
+The goal is to strengthen my SQL fundamentals, translate requirements into queries, understand the results, and gradually move toward analytical SQL through hands-on practice.
 
 ## Technologies
 
@@ -13,111 +13,181 @@ The goal is to build confidence in writing SQL, translating requirements into fi
 
 ## Repository Structure
 
-| File                  | Description                                                   |
-| --------------------- | ------------------------------------------------------------- |
-| `sakila_practice.sql` | Practice questions and their SQL solutions                    |
-| `README.md`           | Project overview, setup, usage, learning topics, and progress |
+```text
+sakila-sql-practice/
+├── README.md
+├── sakila_practice.sql
+├── sakila_group_by_practice.sql
+└── window_function_practice.sql
+```
 
-All completed practice solutions are maintained in one SQL file. Each query is preceded by a comment describing the question.
+| File                           | Description                                                                         | Status             |
+| ------------------------------ | ----------------------------------------------------------------------------------- | ------------------ |
+| `sakila_practice.sql`          | Main Sakila worksheet covering filtering, conditions, sorting, and pattern matching | Complete — 104/104 |
+| `sakila_group_by_practice.sql` | Aggregation practice with `GROUP BY`, `HAVING`, and joins                           | 9/10 completed     |
+| `window_function_practice.sql` | Window function practice using the separate `salesdb.orders` dataset                | In progress        |
+| `README.md`                    | Project overview, setup, usage, and learning progress                               | Updated regularly  |
+
+SQL exercises are organized into separate files based on topics. Each query includes comments explaining the problem.
 
 ## Practice Topics
 
-### SQL Fundamentals
+### 1. SQL Fundamentals
 
-The exercise collection covers:
+The main Sakila exercise collection covers:
 
 - Selecting all or specific columns using `SELECT`
 - Filtering records with `WHERE`
 - Comparison operators (`=`, `>`, `<`, `>=`, `<=`, `!=`)
-- Logical conditions using `AND`, `OR`, and `NOT`
+- Logical operators (`AND`, `OR`, `NOT`)
 - Operator precedence and parentheses
 - Range filtering with `BETWEEN`
-- Matching multiple values with `IN` and `NOT IN`
-- Pattern matching with `LIKE`
+- Matching values with `IN` and `NOT IN`
+- Pattern matching using `LIKE`
 - Using `%` and `_` wildcards
 - Handling missing values with `IS NULL` and `IS NOT NULL`
-- Sorting by one or multiple columns using `ORDER BY`
-- Sorting in ascending and descending order
-- Limiting results with `LIMIT`
-- Combining multiple conditions to solve SQL problems
+- Sorting records with `ORDER BY`
+- Ascending and descending sorting
+- Limiting output with `LIMIT`
+- Combining multiple filtering conditions
 
-### SQL Window Functions — In Progress
+### 2. SQL Aggregation, GROUP BY and HAVING
 
-Currently learning SQL window functions to perform calculations across related rows while retaining individual rows in the output.
+Practicing SQL aggregation techniques using the Sakila database.
 
-Topics being explored:
+Topics covered:
 
-- Introduction to window functions
-- Understanding the `OVER()` clause
-- Grouping rows with `PARTITION BY`
-- Sorting within windows using `ORDER BY`
-- Row numbering using `ROW_NUMBER()`
-- Ranking using `RANK()` and `DENSE_RANK()`
-- Understanding differences between ranking functions
-- Aggregate window functions such as `SUM()`, `AVG()`, and `COUNT()`
-- Running totals and cumulative calculations
-- Accessing previous and next rows using `LAG()` and `LEAD()`
-- Difference between `GROUP BY` and window functions
+- `COUNT()` to count records
+- `SUM()` to calculate total values
+- `AVG()` to calculate averages
+- `MIN()` and `MAX()` to find minimum and maximum values
+- `GROUP BY` to group related records
+- `HAVING` to filter aggregated groups
+- `ORDER BY` to sort aggregated results
+- `INNER JOIN` with aggregated data
+- Customer-wise payment summaries
 
-#### Window Function Example
-
-An illustrative Sakila query that assigns a row number to each customer's payments, ordered by payment amount:
+#### Example: Total Payment by Staff
 
 ```sql
 SELECT
-    payment_id,
-    customer_id,
-    amount,
-    ROW_NUMBER() OVER (
-        PARTITION BY customer_id
-        ORDER BY amount DESC, payment_id ASC
-    ) AS payment_position
-FROM payment;
+    staff_id,
+    SUM(amount) AS total_payment
+FROM payment
+GROUP BY staff_id;
 ```
 
-In this example:
+This query calculates the total payment amount processed by each staff member.
 
-- `PARTITION BY customer_id` divides payments into customer-wise groups.
-- `ORDER BY amount DESC` arranges payments from highest to lowest within each customer.
-- `payment_id ASC` provides consistent ordering when amounts are equal.
-- `ROW_NUMBER()` assigns a sequential number within each customer's partition.
+### 3. SQL Window Functions — In Progress
 
-Unlike `GROUP BY`, a window function can calculate across related rows without collapsing them into a single row per group.
+Currently learning window functions to perform calculations across related rows while preserving individual records.
 
-_This is a learning example, not a claim that the window-function exercises have been completed. They will be added to the practice file as they are completed._
+These exercises use the separate `salesdb.orders` dataset.
 
-## Tables Used
+Topics being practiced:
 
-| Table      | Data                                                    |
-| ---------- | ------------------------------------------------------- |
-| `actor`    | Actor names and identifiers                             |
-| `film`     | Film titles, ratings, lengths, and rental details       |
-| `customer` | Customer details, store associations, and active status |
-| `payment`  | Payment amounts, dates, and related customers and staff |
-| `rental`   | Rental and return dates                                 |
-| `staff`    | Staff details and store associations                    |
-| `address`  | Address information                                     |
+- Understanding window functions
+- Difference between `GROUP BY` and window functions
+- `OVER()` clause
+- `PARTITION BY` clause
+- Aggregate window functions using `SUM()`
+- Calculating totals without combining individual rows
+
+Additional topics planned:
+
+- `ROW_NUMBER()`
+- `RANK()`
+- `DENSE_RANK()`
+- Running totals
+- Window frames
+- `LAG()` and `LEAD()`
+
+#### Example: GROUP BY vs Window Function
+
+Using `GROUP BY` to calculate total sales for each product:
+
+```sql
+USE salesdb;
+
+SELECT
+    productid,
+    SUM(sales) AS total_sale
+FROM orders
+GROUP BY productid;
+```
+
+Using a window function to calculate total sales while keeping individual order records:
+
+```sql
+SELECT
+    orderid,
+    orderdate,
+    productid,
+    SUM(sales) OVER (
+        PARTITION BY productid
+    ) AS total_sale
+FROM orders;
+```
+
+**Key Difference:**
+
+- `GROUP BY` combines records into grouped results.
+- Window functions perform calculations across related rows without removing individual rows.
+
+## Databases and Tables Used
+
+### Sakila Database
+
+| Table           | Description                                       |
+| --------------- | ------------------------------------------------- |
+| `actor`         | Actor names and identifiers                       |
+| `film`          | Film titles, ratings, lengths, and rental details |
+| `customer`      | Customer information and store assignments        |
+| `payment`       | Payment amounts, dates, customers, and staff      |
+| `rental`        | Rental and return transactions                    |
+| `staff`         | Staff records and store associations              |
+| `address`       | Address information                               |
+| `inventory`     | Film copies in stores                             |
+| `film_category` | Film-to-category relationships                    |
+| `category`      | Film categories                                   |
+
+### SalesDB Database
+
+The `salesdb` database is used for window function learning.
+
+**Table:** `orders`
+
+Columns used in practice:
+
+- `orderid`
+- `orderdate`
+- `productid`
+- `customerid`
+- `sales`
+
+**Note:** SalesDB is a separate practice dataset and is not included in the standard Sakila database.
 
 ## Getting Started
 
-### 1. Prepare MySQL
+### 1. Set Up MySQL
 
-Install MySQL Server and connect using a MySQL client.
+Install MySQL Server and connect using the MySQL command-line client or another compatible SQL client.
 
 ### 2. Import Sakila
 
-Obtain the sample database from the official source:
+Download the Sakila sample database from the official MySQL documentation:
 
 https://dev.mysql.com/doc/sakila/en/
 
-Import the schema first, followed by the data. Run these commands at the `mysql>` prompt, replacing the paths with your local file locations:
+Import the schema and data using:
 
 ```sql
 SOURCE /absolute/path/to/sakila-schema.sql;
 SOURCE /absolute/path/to/sakila-data.sql;
 ```
 
-The schema script recreates the `sakila` database. Check for existing work before importing it.
+The schema script recreates the `sakila` database. Check for existing work before importing.
 
 ### 3. Verify the Database
 
@@ -132,33 +202,39 @@ FROM actor;
 
 The standard Sakila dataset contains 200 actors.
 
-## Running the Solutions
+## Running the SQL Files
 
-For practice, execute individual queries from `sakila_practice.sql` and inspect the results.
-
-To execute the entire file, run this at the `mysql>` prompt:
+### Main Sakila Practice
 
 ```sql
+USE sakila;
+
 SOURCE /absolute/path/to/sakila_practice.sql;
 ```
 
-Running the complete file executes every included query and can produce a large amount of terminal output.
-
-## Example
-
-Find PG-rated films between 90 and 120 minutes long, ordered by length:
+### GROUP BY Practice
 
 ```sql
-SELECT *
-FROM film
-WHERE rating = 'PG'
-  AND length BETWEEN 90 AND 120
-ORDER BY length ASC;
+USE sakila;
+
+SOURCE /absolute/path/to/sakila_group_by_practice.sql;
 ```
 
-This combines equality filtering, an inclusive range, and ascending sorting.
+### Window Function Practice
+
+The following requires the separate `salesdb` database and its `orders` table to be set up first.
+
+```sql
+USE salesdb;
+
+SOURCE /absolute/path/to/window_function_practice.sql;
+```
+
+Individual queries can also be executed directly in MySQL or Visual Studio Code.
 
 ## Practice Progress
+
+### Sakila SQL — Main Worksheet
 
 - [x] Questions 1–23
 - [x] Questions 24–60
@@ -166,42 +242,80 @@ This combines equality filtering, an inclusive range, and ascending sorting.
 - [x] Questions 65–83
 - [x] Questions 84–100
 
-**Sakila worksheet: 104/104 question entries covered.**
+**Sakila Worksheet: 104/104 Questions Completed**
 
-### Advanced SQL Learning
+The original worksheet contains 104 question entries because Questions 61–64 appear twice.
 
-- [x] SQL filtering and logical conditions
-- [x] Pattern matching using `LIKE`
-- [x] Sorting and limiting results
-- [x] Combining multiple filtering conditions
-- [ ] Window functions — learning in progress
-- [ ] Window-function practice exercises
+The original worksheet contains 104 question entries because Questions 61–64 appear twice.
 
-The progress checklist will be updated as additional queries and concepts are practiced.
+### GROUP BY Practice
+
+- [x] Q1 — Total films by rating
+- [x] Q2 — Average film length by rating
+- [x] Q3 — Customer count by store
+- [x] Q4 — Total payments by staff
+- [x] Q5 — Minimum and maximum replacement cost
+- [x] Q6 — Customers with more than 20 rentals
+- [x] Q7 — Customers with average payment above 3
+- [x] Q8 — Rental durations with at least 50 films
+- [x] Q9 — Total payments by customer using joins
+- [ ] Q10 — Revenue generated by films in each category
+
+**GROUP BY Practice: 9/10 Completed**
+
+### Window Function Practice
+
+- [x] Understanding `GROUP BY` versus window functions
+- [x] Practicing `SUM() OVER()`
+- [x] Practicing `PARTITION BY`
+- [x] Calculating product-wise totals while retaining order details
+- [ ] Ranking functions
+- [ ] Running totals
+- [ ] Window frames
+- [ ] `LAG()` and `LEAD()`
+
+**Window Function Practice: In Progress**
 
 ## Query Notes
 
-- An empty result is valid when no records match a condition.
 - `BETWEEN` includes both boundary values.
-- Use `IS NULL` to test for missing values.
-- Parentheses make combined `AND` and `OR` conditions explicit.
-- Use `ORDER BY` when the order of returned records matters.
-- For reproducible "first N" results, use `ORDER BY` with `LIMIT` and a unique tie-breaker where needed.
-- Date-time filters require care when a question intends to include an entire final day.
-- `LIKE` supports `%` for zero or more characters and `_` for exactly one character.
-- Window functions perform calculations over related rows while preserving individual result rows.
+- `IS NULL` checks for missing values.
+- `AND` has higher precedence than `OR`.
+- Parentheses help control logical conditions.
+- `%` matches zero or more characters in a `LIKE` pattern.
+- `_` matches exactly one character in a `LIKE` pattern.
+- `WHERE` filters rows before grouping.
+- `HAVING` filters groups after aggregation.
+- `GROUP BY` is used to summarize records.
+- Window functions calculate across related rows without collapsing individual records.
 - `PARTITION BY` divides rows into partitions for window calculations.
-- `ORDER BY` inside `OVER()` determines the order used by applicable window functions.
+- `ORDER BY` controls result ordering.
+- Use a unique tie-breaker when deterministic top-N results are needed.
+- Date-time filtering requires care when including an entire final day.
 
 ## Learning Objective
 
-The purpose of this repository is not just to complete SQL questions but to understand how queries work and build the ability to solve database problems independently.
+The purpose of this repository is to document practical SQL learning and improve the ability to solve database problems independently.
 
-The practice progresses from basic SQL filtering and pattern matching toward analytical queries and advanced SQL concepts.
+The learning journey progresses through:
+
+1. SQL fundamentals
+2. Filtering and conditional queries
+3. Pattern matching
+4. Sorting and limiting results
+5. Aggregate functions
+6. GROUP BY and HAVING
+7. SQL joins
+8. Window functions
+9. Advanced SQL practice
+
+The focus is on understanding query logic, practicing regularly, and building a strong foundation for data analytics and data engineering.
 
 ## Dataset Credit
 
-Sakila is a sample database provided by MySQL. This repository contains SQL practice solutions using that dataset.
+Sakila is a sample database provided by MySQL.
+
+The `salesdb` database is a separate learning dataset used for window function practice.
 
 ## Author
 
