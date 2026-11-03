@@ -160,15 +160,13 @@ This combines equality filtering, an inclusive range, and ascending sorting.
 
 ## Practice Progress
 
-### Sakila SQL Exercises
-
 - [x] Questions 1–23
 - [x] Questions 24–60
-- [x] Pattern-matching exercises, including both sets numbered 61–64
-- [x] Questions 65–67
-- [ ] Questions 68–100
+- [x] Questions 61–64 (both sets)
+- [x] Questions 65–83
+- [x] Questions 84–100
 
-The source worksheet contains 104 question entries because numbers 61–64 appear twice. Both sets are retained using A/B suffixes.
+**Sakila worksheet: 104/104 question entries covered.**
 
 ### Advanced SQL Learning
 
