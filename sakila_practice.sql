@@ -584,3 +584,160 @@ SELECT *
 FROM film
 WHERE title LIKE 'B_E%'
 ORDER BY title ASC;
+
+
+
+-- Q84. Find active customers whose email ends with '.com'
+-- and store_id is 1 or 2. Show the first 8 records.
+
+SELECT *
+FROM customer
+WHERE email LIKE '%.com'
+  AND active = 1
+  AND store_id IN (1, 2)
+ORDER BY customer_id ASC
+LIMIT 8;
+
+
+-- Q85. Show the 5 longest films that are NOT rated 'G'
+-- and have rental_rate greater than 2.99.
+
+SELECT *
+FROM film
+WHERE rating != 'G'
+  AND rental_rate > 2.99
+ORDER BY length DESC, film_id ASC
+LIMIT 5;
+
+
+-- Q86. List films ordered by title ascending.
+
+SELECT *
+FROM film
+ORDER BY title ASC;
+
+
+-- Q87. List customers ordered by last_name descending.
+
+SELECT *
+FROM customer
+ORDER BY last_name DESC;
+
+
+-- Q88. List payments ordered by amount descending.
+
+SELECT *
+FROM payment
+ORDER BY amount DESC;
+
+
+-- Q89. List PG-rated films longer than 100 minutes,
+-- ordered by length descending.
+
+SELECT *
+FROM film
+WHERE rating = 'PG'
+  AND length > 100
+ORDER BY length DESC;
+
+
+-- Q90. Find customers from store_id = 1 whose
+-- last_name starts with 'C', ordered alphabetically.
+
+SELECT *
+FROM customer
+WHERE store_id = 1
+  AND last_name LIKE 'C%'
+ORDER BY last_name ASC;
+
+
+-- Q91. Show payments between 2 and 6,
+-- ordered by amount descending and payment_date ascending.
+
+SELECT *
+FROM payment
+WHERE amount BETWEEN 2 AND 6
+ORDER BY amount DESC, payment_date ASC;
+
+
+-- Q92. Display rentals where return_date IS NOT NULL
+-- and rental_date is after '2005-06-01',
+-- ordered by rental_date descending.
+
+SELECT *
+FROM rental
+WHERE return_date IS NOT NULL
+  AND rental_date > '2005-06-01'
+ORDER BY rental_date DESC;
+
+
+-- Q93. List actors whose first_name contains 'E'
+-- but does not start with 'A', ordered by first_name.
+
+SELECT *
+FROM actor
+WHERE first_name LIKE '%E%'
+  AND first_name NOT LIKE 'A%'
+ORDER BY first_name ASC;
+
+
+-- Q94. Find films whose replacement_cost is greater
+-- than 20 and rating is 'R' or 'PG-13',
+-- ordered by replacement_cost descending.
+
+SELECT *
+FROM film
+WHERE replacement_cost > 20
+  AND rating IN ('R', 'PG-13')
+ORDER BY replacement_cost DESC;
+
+
+-- Q95. Show customers whose email contains '.net'
+-- or '.org', ordered by customer_id descending.
+
+SELECT *
+FROM customer
+WHERE email LIKE '%.net%'
+   OR email LIKE '%.org%'
+ORDER BY customer_id DESC;
+
+
+-- Q96. Show the first 5 actors.
+
+SELECT *
+FROM actor
+ORDER BY actor_id ASC
+LIMIT 5;
+
+
+-- Q97. Show the 10 highest payments.
+
+SELECT *
+FROM payment
+ORDER BY amount DESC, payment_id ASC
+LIMIT 10;
+
+
+-- Q98. Show the first 3 films rated 'PG'.
+
+SELECT *
+FROM film
+WHERE rating = 'PG'
+ORDER BY film_id ASC
+LIMIT 3;
+
+
+-- Q99. Show the 5 shortest films.
+
+SELECT *
+FROM film
+ORDER BY length ASC, film_id ASC
+LIMIT 5;
+
+
+-- Q100. Show the latest 10 rentals.
+
+SELECT *
+FROM rental
+ORDER BY rental_date DESC, rental_id DESC
+LIMIT 10;
